@@ -1,0 +1,36 @@
+{
+  "name": "tetris.js",
+  "version": "1.0.0",
+  "description": "Tetris in Javascript",
+  "scripts": {
+    "dev:hot": "./node_modules/.bin/webpack-dev-server -d --progress --colors --hot --inline --content-base=app/browser",
+    "dev:watch": "./node_modules/.bin/webpack --watch",
+    "build": "./node_modules/.bin/webpack --progress -p",
+    "app:console": "node app/console/build/app.console.js",
+    "app:browser": "xdg-open app/browser/index.html",
+    "test": "./node_modules/.bin/mocha --compilers js:babel-core/register"
+  },
+  "author": "mirz <mirz.hq@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-transform-object-rest-spread": "^6.20.2",
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-preset-es2015": "^6.18.0",
+    "chai": "^3.5.0",
+    "css-loader": "^0.26.1",
+    "mocha": "^3.2.0",
+    "node-sass": "^4.3.0",
+    "sass-loader": "^4.1.1",
+    "sinon": "^1.17.7",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "lodash.throttle": "^4.1.1",
+    "preact": "^7.1.0"
+  }
+}
