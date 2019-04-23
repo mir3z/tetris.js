@@ -32,6 +32,11 @@ export default function Game(keyListener, wait, tetris) {
             tetris: tetris.storeCurrent()
         }
     }
+    const instantPlace = ({ tetris }) => {
+        return {
+            tetris: tetris.placeCurrent()
+        }
+    }
 
     const step = () => {
         const { tetris } = state;
@@ -65,11 +70,13 @@ export default function Game(keyListener, wait, tetris) {
         },
 
         start() {
-            const input = ({ x = 0, y = 0, stored = false }) => () => {
+            const input = ({ x = 0, y = 0, stored = false, space = false }) => () => {
                 let nextState;
 
                 if (stored) {
                     nextState = store(state);
+                } else if (space) {
+                    nextState = instantPlace(state);
                 } else {
                     nextState = (y === -1)
                         ? movement(state, rotate())
@@ -85,7 +92,8 @@ export default function Game(keyListener, wait, tetris) {
                 .onKeyRight(input({ x: 1 }))
                 .onKeyUp(input({ y: -1 }))
                 .onKeyDown(input({ y: 1 }))
-                .onKeyC(input({ stored: true }));
+                .onKeyC(input({ stored: true }))
+                .onKeySpace(input({ space: true }));
 
             wait(TICK_TIME).then(step);
         }

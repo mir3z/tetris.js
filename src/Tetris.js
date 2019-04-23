@@ -34,6 +34,27 @@ export default function Tetris(board, landing, tetrominoStream, stored, storedTh
             return storedThisTurn ? this : Tetris(board, nextTetromino, tetrominoStream, landing.reset(), true, totalLinesCleared, score);
         },
 
+        placeCurrent() {
+            if (lost) {
+                return this;
+            }
+
+            let next = landing.fall();
+            if (board.collides(next)) {
+                landing = next.moveBy(-1, 0);
+                return this.step();
+            }
+
+            while (true) {
+                next = next.fall();
+
+                if (board.collides(next)) {
+                    landing = next.moveBy(-1, 0);
+                    return this.step();
+                }
+            }
+        },
+
         step() {
             const futureLanding = landing.fall();
             const collision = board.collides(futureLanding);
