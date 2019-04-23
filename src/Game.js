@@ -34,7 +34,7 @@ export default function Game(keyListener, wait, tetris) {
     }
     const instantPlace = ({ tetris }) => {
         return {
-            tetris: tetris.placeCurrent()
+            tetris: tetris.instaDrop()
         }
     }
 

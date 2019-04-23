@@ -34,7 +34,7 @@ export default function Tetris(board, landing, tetrominoStream, stored, storedTh
             return storedThisTurn ? this : Tetris(board, nextTetromino, tetrominoStream, landing.reset(), true, totalLinesCleared, score);
         },
 
-        placeCurrent() {
+        instaDrop() {
             if (lost) {
                 return this;
             }
@@ -42,7 +42,7 @@ export default function Tetris(board, landing, tetrominoStream, stored, storedTh
             let next = landing.fall();
             if (board.collides(next)) {
                 landing = next.moveBy(-1, 0);
-                return this.step();
+                return Tetris(board, landing, tetrominoStream, stored, storedThisTurn, totalLinesCleared, score);
             }
 
             while (true) {
@@ -50,7 +50,7 @@ export default function Tetris(board, landing, tetrominoStream, stored, storedTh
 
                 if (board.collides(next)) {
                     landing = next.moveBy(-1, 0);
-                    return this.step();
+                    return Tetris(board, landing, tetrominoStream, stored, storedThisTurn, totalLinesCleared, score);
                 }
             }
         },
