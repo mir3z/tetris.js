@@ -115,6 +115,8 @@ export const StoredTetromino = ({ stored }) => {
     }
 
     stored.forEach(({ value, row, col }) => {
+        col -= 3;
+        console.log(row, col)
         grid[row] = grid[row] || [];
         grid[row][col] = value;
     });

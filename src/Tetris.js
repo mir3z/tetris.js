@@ -3,7 +3,6 @@ export default function Tetris(board, landing, tetrominoStream, stored, storedTh
     const speed = Math.max(-1/30 * level + 1, 0.3);
     const lostTetris = () => Tetris(board, landing, tetrominoStream, stored, storedThisTurn, totalLinesCleared, score, true);
 
-    console.log('auto', storedThisTurn);
     return {
         board,
         landing,
@@ -27,13 +26,12 @@ export default function Tetris(board, landing, tetrominoStream, stored, storedTh
         },
 
         storeCurrent() {
-            console.log(storedThisTurn);
-            if (lost) {
+            if (lost || storedThisTurn) {
                 return this;
             }
 
-            const nextTetromino = tetrominoStream.next().moveBy(0, 3);
-            return storedThisTurn ? this : Tetris(board, nextTetromino, tetrominoStream, landing, true, totalLinesCleared, score);
+            const nextTetromino = !stored ? tetrominoStream.next().moveBy(0, 3) : stored;
+            return storedThisTurn ? this : Tetris(board, nextTetromino, tetrominoStream, landing.reset(), true, totalLinesCleared, score);
         },
 
         step() {

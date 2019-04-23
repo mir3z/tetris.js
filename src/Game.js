@@ -27,7 +27,7 @@ export default function Game(keyListener, wait, tetris) {
             tetris: tetris.spawn(getNextLanding(tetris.landing))
         };
     };
-    const store = () => {
+    const store = ({ tetris }) => {
         return {
             tetris: tetris.storeCurrent()
         }
@@ -69,7 +69,7 @@ export default function Game(keyListener, wait, tetris) {
                 let nextState;
 
                 if (stored) {
-                    nextState = store();
+                    nextState = store(state);
                 } else {
                     nextState = (y === -1)
                         ? movement(state, rotate())
