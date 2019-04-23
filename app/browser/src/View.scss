@@ -76,6 +76,7 @@ html, body {
             &.b-5 { background-color: darkorange; }
             &.b-6 { background-color: green; }
             &.b-7 { background-color: firebrick; }
+            &.b-8 { background-color: gray; }
         }
     }
 
@@ -115,6 +116,28 @@ html, body {
             margin-bottom: 10px;
 
             .next-wrapper {
+                display: inline-block;
+                text-align: left;
+            }
+
+            .block:not(.b) {
+                border: none;
+                background: transparent;
+            }
+
+            .block.b-2 {
+                position: relative;
+                left: -15px;
+            }
+        }
+
+        .stored {
+            text-align: center;
+            font-size: 0;
+            height: 60px;
+            margin-bottom: 10px;
+
+            .stored-wrapper {
                 display: inline-block;
                 text-align: left;
             }

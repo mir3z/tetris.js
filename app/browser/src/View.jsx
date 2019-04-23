@@ -29,6 +29,7 @@ export default function createGameView(game) {
 
 export const Game = ({ tetris, clearing }) => (
     <div className="game">
+        <Stored { ...tetris } />
         <Board { ...{ ...tetris, clearing } } />
         <Stats { ...tetris } />
     </div>
@@ -62,6 +63,14 @@ export const Stats = ({ level, score, totalLinesCleared, tetrominoStream }) => (
     </div>
 );
 
+export const Stored = ({ stored }) => (
+    <div className="stats">
+        <StatsSection title="Stored">
+            <StoredTetromino { ...{ stored } }></StoredTetromino>
+        </StatsSection>
+    </div>
+);
+
 export const StatsSection = ({ className, title, children }) => (
     <div className={ cls(className, "section") }>
         <div className="title">{ title }</div>
@@ -86,6 +95,41 @@ export const NextTetromino = ({ tetrominoStream }) => {
     return (
         <div className="next">
             <div className="next-wrapper">
+                { grid.map(renderRow) }
+            </div>
+        </div>
+    );
+};
+
+export const StoredTetromino = ({ stored }) => {
+    const grid = [];
+
+    if (!stored) {
+        return (
+            <div className="stored">
+                <div className="stored-wrapper">
+                    
+                </div>
+            </div>
+        );
+    }
+
+    stored.forEach(({ value, row, col }) => {
+        col -= 3;
+        console.log(row, col)
+        grid[row] = grid[row] || [];
+        grid[row][col] = value;
+    });
+
+    const renderRow = row => (
+        <Row>
+            { mapOverSparse(row, value => <Block value={ value } />) }
+        </Row>
+    );
+
+    return (
+        <div className="stored">
+            <div className="stored-wrapper">
                 { grid.map(renderRow) }
             </div>
         </div>

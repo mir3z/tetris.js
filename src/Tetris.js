@@ -1,7 +1,7 @@
-export default function Tetris(board, landing, tetrominoStream, totalLinesCleared = 0, score = 0, lost = false) {
+export default function Tetris(board, landing, tetrominoStream, stored, storedThisTurn = false, totalLinesCleared = 0, score = 0, lost = false) {
     const level = Math.floor(totalLinesCleared / 10);
     const speed = Math.max(-1/30 * level + 1, 0.3);
-    const lostTetris = () => Tetris(board, landing, tetrominoStream, totalLinesCleared, score, true);
+    const lostTetris = () => Tetris(board, landing, tetrominoStream, stored, storedThisTurn, totalLinesCleared, score, true);
 
     return {
         board,
@@ -10,6 +10,8 @@ export default function Tetris(board, landing, tetrominoStream, totalLinesCleare
         speed,
         score,
         lost,
+        stored,
+        storedThisTurn,
         tetrominoStream,
         totalLinesCleared,
         
@@ -20,7 +22,37 @@ export default function Tetris(board, landing, tetrominoStream, totalLinesCleare
             
             return board.collides(tetromino)
                 ? this
-                : Tetris(board, tetromino, tetrominoStream, totalLinesCleared, score);
+                : Tetris(board, tetromino, tetrominoStream, stored, storedThisTurn, totalLinesCleared, score);
+        },
+
+        storeCurrent() {
+            if (lost || storedThisTurn) {
+                return this;
+            }
+
+            const nextTetromino = !stored ? tetrominoStream.next().moveBy(0, 3) : stored;
+            return storedThisTurn ? this : Tetris(board, nextTetromino, tetrominoStream, landing.reset(), true, totalLinesCleared, score);
+        },
+
+        instaDrop() {
+            if (lost) {
+                return this;
+            }
+
+            let next = landing.fall();
+            if (board.collides(next)) {
+                landing = next.moveBy(-1, 0);
+                return Tetris(board, landing, tetrominoStream, stored, storedThisTurn, totalLinesCleared, score);
+            }
+
+            while (true) {
+                next = next.fall();
+
+                if (board.collides(next)) {
+                    landing = next.moveBy(-1, 0);
+                    return Tetris(board, landing, tetrominoStream, stored, storedThisTurn, totalLinesCleared, score);
+                }
+            }
         },
 
         step() {
@@ -28,7 +60,7 @@ export default function Tetris(board, landing, tetrominoStream, totalLinesCleare
             const collision = board.collides(futureLanding);
             
             if (!collision) {
-                return Tetris(board, futureLanding, tetrominoStream, totalLinesCleared, score);
+                return Tetris(board, futureLanding, tetrominoStream, stored, storedThisTurn, totalLinesCleared, score);
             }
 
             if (landing.row <= 1) {
@@ -40,7 +72,7 @@ export default function Tetris(board, landing, tetrominoStream, totalLinesCleare
             const fullLines = afterLanding.fullLines;
             const nextScore = score + calcScore(level, fullLines);
             
-            return Tetris(afterLanding.clearLines(), nextTetromino, tetrominoStream, totalLinesCleared + fullLines, nextScore);
+            return Tetris(afterLanding.clearLines(), nextTetromino, tetrominoStream, stored, false, totalLinesCleared + fullLines, nextScore);
         }
     };
 }

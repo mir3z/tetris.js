@@ -15,6 +15,10 @@ export default function Tetromino(row = 0, col = 0, rotation = 0, rotations = []
             return Tetromino(row + rows, col + cols, rotation, rotations);
         },
 
+        reset() {
+            return Tetromino(0, 3, norm(0), rotations);
+        },
+
         fall() {
             return this.moveBy(1, 0);
         },
@@ -29,6 +33,10 @@ export default function Tetromino(row = 0, col = 0, rotation = 0, rotations = []
 
         forEach(fn) {
             shape.forEach(block => fn(relative(block)));
+        },
+
+        clone() {
+            return Tetromino(row, col, rotation, rotations);
         }
     };
 }
