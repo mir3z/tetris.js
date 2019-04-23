@@ -129,6 +129,28 @@ html, body {
                 left: -15px;
             }
         }
+
+        .stored {
+            text-align: center;
+            font-size: 0;
+            height: 60px;
+            margin-bottom: 10px;
+
+            .stored-wrapper {
+                display: inline-block;
+                text-align: left;
+            }
+
+            .block:not(.b) {
+                border: none;
+                background: transparent;
+            }
+
+            .block.b-2 {
+                position: relative;
+                left: -15px;
+            }
+        }
     }
 
     .tetris-intro {

@@ -27,6 +27,11 @@ export default function Game(keyListener, wait, tetris) {
             tetris: tetris.spawn(getNextLanding(tetris.landing))
         };
     };
+    const store = () => {
+        return {
+            tetris: tetris.storeCurrent()
+        }
+    }
 
     const step = () => {
         const { tetris } = state;
@@ -60,10 +65,16 @@ export default function Game(keyListener, wait, tetris) {
         },
 
         start() {
-            const input = ({ x = 0, y = 0 }) => () => {
-                const nextState = (y === -1)
-                    ? movement(state, rotate())
-                    : movement(state, move({ x, y }));
+            const input = ({ x = 0, y = 0, stored = false }) => () => {
+                let nextState;
+
+                if (stored) {
+                    nextState = store();
+                } else {
+                    nextState = (y === -1)
+                        ? movement(state, rotate())
+                        : movement(state, move({ x, y }));
+                }
 
                 update(nextState);
             };
@@ -73,7 +84,8 @@ export default function Game(keyListener, wait, tetris) {
                 .onKeyLeft(input({ x: -1 }))
                 .onKeyRight(input({ x: 1 }))
                 .onKeyUp(input({ y: -1 }))
-                .onKeyDown(input({ y: 1 }));
+                .onKeyDown(input({ y: 1 }))
+                .onKeyC(input({ stored: true }));
 
             wait(TICK_TIME).then(step);
         }
