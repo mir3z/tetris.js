@@ -20,6 +20,21 @@ export default function Board(width, height, landed) {
 
         land(tetromino) {
             const nextLanded = landed.map(row => row.clone());
+            let next = tetromino.clone();
+
+            while (true) {
+                next = next.fall();
+
+                if (this.collides(next)) {
+                    next = next.moveBy(-1, 0);
+
+                    next.forEach(({ value, row, col }) => {
+                        nextLanded[row] = nextLanded[row].cell(col).set(8);
+                    });
+
+                    break;
+                }
+            }
 
             tetromino.forEach(({ value, row, col }) => {
                 nextLanded[row] = nextLanded[row].cell(col).set(value);

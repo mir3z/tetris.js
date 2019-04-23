@@ -33,6 +33,10 @@ export default function Tetromino(row = 0, col = 0, rotation = 0, rotations = []
 
         forEach(fn) {
             shape.forEach(block => fn(relative(block)));
+        },
+
+        clone() {
+            return Tetromino(row, col, rotation, rotations);
         }
     };
 }
